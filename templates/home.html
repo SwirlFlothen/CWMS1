@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+        }
+
+        header nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        header a:hover {
+            color: #f39c12;
+        }
+
+        /* Main Content Styles */
+        main {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        section h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .service-card h3 {
+            margin: 10px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .service-card p {
+            margin: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .service-card a {
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .service-card a:hover {
+            color: #e74c3c;
+        }
+
+        .add-service {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .add-service:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <div>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about_us' %}">About Us</a>
+            <a href="{% url 'faq' %}">FAQ</a>
+        </div>
+        <div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}">Dashboard</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Sign Up</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main>
+    <h1>Welcome to Construction Waste Management System</h1>
+    <section>
+        <h2>Our Services</h2>
+        <div class="services-container">
+            {% for service in services %}
+            <div class="service-card">
+                <img src="{{ service.image.url }}" alt="{{ service.title }}">
+                <h3>{{ service.title }}</h3>
+                <p>{{ service.description }}</p>
+                <p>Price: ${{ service.price }}</p>
+                <a href="{% url 'edit_service' service.id %}">Edit</a>
+                <a href="{% url 'delete_service' service.id %}">Delete</a>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'add_service' %}" class="add-service">Add New Service</a>
+    </section>
+</main>
+
+</body>
+</html>
